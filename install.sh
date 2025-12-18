@@ -8,8 +8,11 @@ echo "   RECLUTAMIENTO DE AGENTE - SYSTEM BREAK    "
 echo "==============================================="
 
 # 1. Pedir el "Código de Vinculación" (IP del Servidor)
-# Forzamos la lectura desde /dev/tty para que funcione con curl | bash
-read -p "[-] Ingrese el Código de Servidor (Ej: 192.168.1.15): " SERVER_IP </dev/tty
+# Abrimos /dev/tty en el descriptor 3 para lectura interactiva
+exec 3< /dev/tty
+printf "[-] Ingrese el Código de Servidor (Ej: 192.168.1.15): "
+read -u 3 SERVER_IP
+exec 3<&-
 
 if [[ -z "$SERVER_IP" ]]; then
     echo "[!] Error: El código/IP no puede estar vacío."
