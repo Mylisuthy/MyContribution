@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger("agent.comm.outbound")
 
 # --- Importaciones de otros módulos del agente ---
-from agent.config import AGENT_ID, SERVER_URL # Asumo que SERVER_URL está en config.py
+from agent.config import AGENT_ID, AGENT_NAME, SERVER_URL
 from agent.security.netstats import is_in_lan, is_online
 from agent.sysadmin.system_info import get_resources
 
@@ -22,8 +22,19 @@ def get_base_payload():
     except Exception:
         ip = "127.0.0.1"
 
+    # Intentar obtener la IP de red real si ip es 127.0.0.1
+    if ip == "127.0.0.1":
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))
+            ip = s.getsockname()[0]
+            s.close()
+        except:
+            pass
+
     return {
-        "agent_id": AGENT_ID,
+        "endpointId": AGENT_ID,
+        "name": AGENT_NAME,
         "hostname": hostname,
         "ip": ip,
         "timestamp": int(time.time())
