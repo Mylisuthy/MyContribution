@@ -1,0 +1,14 @@
+[Unit]
+Description=System Break Agent Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/system-break/agent
+ExecStart=/opt/system-break/agent/venv/bin/python3 main.py
+Restart=always
+Environment=PATH=/opt/system-break/agent/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+[Install]
+WantedBy=multi-user.target

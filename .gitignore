@@ -1,0 +1,6 @@
+__pycache__/
+venv/
+.venv/
+data/agent_id.lic
+*.pyc
+.env
